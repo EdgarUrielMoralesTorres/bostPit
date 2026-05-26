@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/main.py
+src/bostpit.egg-info/PKG-INFO
+src/bostpit.egg-info/SOURCES.txt
+src/bostpit.egg-info/dependency_links.txt
+src/bostpit.egg-info/entry_points.txt
+src/bostpit.egg-info/requires.txt
+src/bostpit.egg-info/top_level.txt
+src/views/clubesView.py
+src/views/incidenciasView.py
+src/views/inicioView.py
+src/views/objetosView.py
+src/views/pedidosView.py
