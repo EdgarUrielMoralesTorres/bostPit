@@ -1,4 +1,0 @@
-bcrypt>=5.0.0
-flet>=0.85.0
-mysql-connector-python>=9.7.0
-python-dotenv>=1.2.2
