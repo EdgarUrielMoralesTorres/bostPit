@@ -28,13 +28,13 @@ def inicioView(page):
                 ft.Icon(ft.Icons.SEARCH,size=50,color=ft.Colors.WHITE),
                 ft.Text("Objetos",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE
                 )]))
-    clubes = ft.Container(width=190,height=190,bgcolor="#34D399",border_radius=20,padding=20,ink=True,on_click=lambda e: page.go("/clubes"),
+    sugerencias = ft.Container(width=190,height=190,bgcolor="#34D399",border_radius=20,padding=20,ink=True,on_click=lambda e: page.go("/sugerencias"),
         content=ft.Column(
             alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
                 ft.Icon(ft.Icons.GROUP,size=50,color=ft.Colors.WHITE),
-                ft.Text("Clubes",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)]))
+                ft.Text("Sugerencias",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)]))
     incidencias = ft.Container(width=190,height=190,bgcolor="#FBBF24",border_radius=20,padding=20,ink=True,on_click=lambda e: page.go("/incidencias"),
         content=ft.Column(
             alignment=ft.MainAxisAlignment.CENTER,
@@ -67,7 +67,7 @@ def inicioView(page):
                                             ]),
                                         ft.Row(alignment=ft.MainAxisAlignment.CENTER,spacing=15,
                                             controls=[
-                                                clubes,
+                                                sugerencias,
                                                 incidencias,
                                             ]),
                                         ]),

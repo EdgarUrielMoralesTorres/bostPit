@@ -1,82 +1,44 @@
+from models.incidenciasModel import IncidenciasModel
 from models.database import Database
-from models.incidenciasModel import incidenciasModel
 
 
 class IncidenciasCtrl:
     def __init__(self):
-        self.model = incidenciasModel(Database())
-
-    def obtener_reportes():
-        connection = Database.get_connection()
-        if not connection:
-            return []
-        cursor = connection.cursor(dictionary=True)
-        query = """ SELECT * FROM reportes """
-        cursor.execute(query)
-        reportes = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return reportes
+        self.model = IncidenciasModel(Database())
 
 
-    def obtener_reporte(id_reporte):
-        connection = Database.get_connection()
-        if not connection:
-            return None
-        cursor = connection.cursor(dictionary=True)
-        query = """ SELECT * FROM reportes WHERE id_reporte = %s """
-        cursor.execute(query, (id_reporte,))
-        reporte = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        return reporte
-
-    def crear_reporte(tipo, lugar, prioridad, descripcion):
-        connection = Database.get_connection()
-        if not connection:
-            return False, "Error de conexión"
-        try:
-
-            cursor = connection.cursor()
-            query = """ INSERT INTO reportes (tipo_incidente, lugar, prioridad, descripcion) VALUES (%s, %s, %s, %s) """
-            values = (tipo, lugar, prioridad, descripcion)
-            cursor.execute(query, values)
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True, "Reporte enviado correctamente"
-        except Exception as err:
-            return False, f"Error: {err}"
+    def obtener_reportes(self):
+        return self.model.obtener()
 
 
-    def editar_reporte(id_reporte, tipo, lugar, prioridad, descripcion):
-        connection = Database.get_connection()
-        if not connection:
-            return False, "Error de conexión"
-        try:
-            cursor = connection.cursor()
-            query = """ UPDATE reportes SET tipo_incidente = %s, lugar = %s, prioridad = %s, descripcion = %s WHERE id_reporte = %s """
-            values = (tipo, lugar, prioridad, descripcion,id_reporte)
-            cursor.execute(query, values)
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True, "Reporte actualizado correctamente"
-        except Exception as err:
-            return False, f"Error: {err}"
+    def obtener_reporte(self, id_reporte):
+        return self.model.obtener_por_id(id_reporte)
 
 
-    def eliminar_reporte(id_reporte):
-        connection = Database.get_connection()
-        if not connection:
-            return False, "Error de conexión"
-        try:
-            cursor = connection.cursor()
-            query = """ DELETE FROM reportes WHERE id_reporte = %s """
-            cursor.execute(query, (id_reporte,))
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True, "Reporte eliminado correctamente"
-        except Exception as err:
-            return False, f"Error: {err}"
+    def crear_reporte(self,tipo,lugar,prioridad,descripcion):
+        if str(tipo).strip() == "":
+            return False, "Seleccione un tipo"
+
+        if lugar.strip() == "":
+            return False, "El lugar no puede estar vacío"
+
+        if str(prioridad).strip() == "":
+            return False, "Seleccione una prioridad"
+
+        if descripcion.strip() == "":
+            return False, "La descripción no puede estar vacía"
+
+
+        return self.model.crear(tipo,lugar,prioridad,descripcion)
+
+
+    def editar_reporte(self,id_reporte,tipo,lugar,prioridad,descripcion):
+        if lugar.strip() == "":
+            return False, "El lugar no puede estar vacío"
+        if descripcion.strip() == "":
+            return False, "La descripción no puede estar vacía"
+        return self.model.editar(id_reporte,tipo,lugar,prioridad,descripcion)
+
+
+    def eliminar_reporte(self, id_reporte):
+        return self.model.eliminar(id_reporte)

@@ -1,98 +1,71 @@
+from models.tiendaModel import TiendaModel
 from models.database import Database
-from models.tiendaModel import tiendaModel
+
 
 class TiendaCtrl:
     def __init__(self):
-        self.model = tiendaModel(Database())
-            
-    def obtener_comidas():
-        connection = Database.get_connection()
-        if not connection:
+        self.model = TiendaModel(Database())
+
+
+    def obtener_productos(self):
+        return self.model.obtener()
+
+
+    def obtener_producto(self, id_producto):
+        return self.model.obtener_por_id(id_producto)
+
+
+    def crear_producto(self,nombre,descripcion,foto,precio):
+        if nombre.strip() == "":
+            return False, "El nombre no puede estar vacío"
+        if descripcion.strip() == "":
+            return False, "La descripción no puede estar vacía"
+        if str(precio).strip() == "":
+            return False, "El precio no puede estar vacío"
+        try:
+            precio = float(precio)
+            if precio <= 0:
+                return False, "El precio debe ser mayor a 0"
+        except:
+            return False, "Precio inválido"
+
+
+        return self.model.crear(nombre,descripcion,foto,precio)
+
+
+    def editar_producto(self,id_producto,nombre,descripcion,foto,precio):
+        if nombre.strip() == "":
+            return False, "El nombre no puede estar vacío"
+        if descripcion.strip() == "":
+            return False, "La descripción no puede estar vacía"
+        try:
+            precio = float(precio)
+            if precio <= 0:
+                return False, "El precio debe ser mayor a 0"
+        except:
+            return False, "Precio inválido"
+        return self.model.editar(id_producto,nombre,descripcion,foto,precio)
+
+
+    def eliminar_producto(self, id_producto):
+        return self.model.eliminar(id_producto)
+
+
+    def buscar_productos(self, nombre):
+        if nombre.strip() == "":
             return []
-        cursor = connection.cursor(dictionary=True)
-        query = """ SELECT * FROM tienda """
-        cursor.execute(query)
-        comidas = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return comidas
-
-    def obtener_comida(id_comida):
-        connection = Database.get_connection()
-        if not connection:
-            return None
-        cursor = connection.cursor(dictionary=True)
-        query = """ SELECT * FROM tienda WHERE id_tienda = %s """
-        cursor.execute(query, (id_comida,))
-        comida = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        return comida
-
-    def agregar_comida(nombre, descripcion, foto, precio):
-        connection = Database.get_connection()
-        if not connection:
-            return False, "Error de conexión"
-
-        try:
-            cursor = connection.cursor()
-            query = """ INSERT INTO tienda (nombre_comida, descripcion, foto_comida, precio) VALUES (%s, %s, %s, %s) """
-            values = (nombre,descripcion,foto,precio)
-            cursor.execute(query, values)
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True, "Comida agregada correctamente"
-
-        except Exception as err:
-            return False, f"Error: {err}"
+        return self.model.buscar(nombre)
 
 
-    def editar_comida(id_comida, nombre, descripcion, foto, precio):
-        connection = Database.get_connection()
-        if not connection:
-            return False, "Error de conexión"
-        try:
-            cursor = connection.cursor()
-
-            query = """ UPDATE tienda SET nombre_comida = %s, descripcion = %s, foto_comida = %s, precio = %s WHERE id_tienda = %s """
-            values = (nombre, descripcion,foto,precio,id_comida)
-            cursor.execute(query, values)
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True, "Comida actualizada correctamente"
-
-        except Exception as err:
-            return False, f"Error: {err}"
-
-
-    def eliminar_comida(id_comida):
-        connection = Database.get_connection()
-        if not connection:
-            return False, "Error de conexión"
-        try:
-            cursor = connection.cursor()
-            query = """ DELETE FROM tienda WHERE id_tienda = %s """
-            cursor.execute(query, (id_comida,))
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return True, "Comida eliminada correctamente"
-
-        except Exception as err:
-            return False, f"Error: {err}"
-
-
-    def buscar_comida(nombre):
-        connection = Database.get_connection()
-        if not connection:
-            return []
-        cursor = connection.cursor(dictionary=True)
-        query = """ SELECT * FROM tienda WHERE nombre_comida LIKE %s """
-        cursor.execute(query, (f"%{nombre}%",))
-        comidas = cursor.fetchall()
-        cursor.close()
-        connection.close()
-
-        return comidas
+    def calcular_total(self, carrito):
+        """
+        carrito:
+        [
+            {"precio": 50, "cantidad": 2},
+            {"precio": 20, "cantidad": 1}
+        ]
+        """
+        total = 0
+        for producto in carrito:
+            total += producto["precio"] * producto["cantidad"]
+        return total

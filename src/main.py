@@ -3,7 +3,7 @@ import flet as ft
 from views.inicioView import inicioView
 from views.tiendaView import PedidosView
 from views.objetosView import ObjetosView
-from views.clubesView import ClubesView
+from views.sugerenciasView import SugerenciasView
 from views.incidenciasView import IncidenciasView
 
 
@@ -24,8 +24,8 @@ def start(page: ft.Page):
         elif page.route == "/objetos":
             page.views.append(ObjetosView(page))
 
-        elif page.route == "/clubes":
-            page.views.append(ClubesView(page))
+        elif page.route == "/sugerencias":
+            page.views.append(SugerenciasView(page))
 
         elif page.route == "/incidencias":
             page.views.append(IncidenciasView(page))

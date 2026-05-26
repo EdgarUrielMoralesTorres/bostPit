@@ -20,15 +20,14 @@ CREATE DATABASE IF NOT EXISTS `bostpit` /*!40100 DEFAULT CHARACTER SET latin1 CO
 USE `bostpit`;
 
 -- Volcando estructura para tabla bostpit.club
-CREATE TABLE IF NOT EXISTS `club` (
-  `id_club` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_club` varchar(100) DEFAULT NULL,
-  `descripcion` varchar(100) DEFAULT NULL,
-  `telefono` int(11) DEFAULT NULL,
-  `correo` varchar(100) DEFAULT NULL,
-  `encargado ` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id_club`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+CREATE TABLE IF NOT EXISTS `sugerencias` (
+    `id_sugerencia` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `titulo` VARCHAR(100)  DEFAULT NULL,
+    `descripcion` VARCHAR(300)  DEFAULT NULL,
+    `fecha` TIMESTAMP DEFAULT CURRENT_TIMESTAMP DEFAULT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
 
 -- La exportación de datos fue deseleccionada.s
 
